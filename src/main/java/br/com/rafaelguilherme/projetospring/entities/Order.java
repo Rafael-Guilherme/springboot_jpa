@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.rafaelguilherme.projetospring.entities.enums.OrderStatus;
 import jakarta.persistence.Entity;
@@ -35,6 +36,7 @@ public class Order implements Serializable {
     private User client;
 
     @OneToMany(mappedBy = "id.order")
+    @JsonManagedReference
     private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
