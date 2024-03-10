@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.rafaelguilherme.projetospring.entities.User;
 import br.com.rafaelguilherme.projetospring.repositories.UserRepository;
+import br.com.rafaelguilherme.projetospring.services.exceptions.DatabaseException;
 import br.com.rafaelguilherme.projetospring.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -35,9 +38,16 @@ public class UserService {
         return null;
     }
 
+    // TODO: Não está retornando erro 404 quando tenta deletar um id que não existe
     public void delete(Long id) {
-        if (id != null) {
-            repository.deleteById(id);
+        try {
+            if (id != null) {
+                repository.deleteById(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
         }
     }
 
