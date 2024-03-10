@@ -31,4 +31,10 @@ public class UserService {
         }
         return null;
     }
+
+    public void delete(Long id) {
+        if (id != null) {
+            repository.deleteById(id);
+        }
+    }
 }
