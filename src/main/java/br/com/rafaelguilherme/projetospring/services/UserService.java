@@ -12,6 +12,7 @@ import br.com.rafaelguilherme.projetospring.entities.User;
 import br.com.rafaelguilherme.projetospring.repositories.UserRepository;
 import br.com.rafaelguilherme.projetospring.services.exceptions.DatabaseException;
 import br.com.rafaelguilherme.projetospring.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -52,10 +53,14 @@ public class UserService {
     }
 
     public User update(Long id, User obj) {
-        if (id != null && obj != null) {
-            User entity = repository.getReferenceById(id);
-            updateData(entity, obj);
-            return repository.save(entity);
+        try {
+            if (id != null && obj != null) {
+                User entity = repository.getReferenceById(id);
+                updateData(entity, obj);
+                return repository.save(entity);
+            }
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
         }
         return null;
     }
