@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    container_name: springboot_course
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567
+      POSTGRES_DB: springboot_course
+    ports:
+      - 5433:5432
